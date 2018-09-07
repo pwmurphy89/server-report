@@ -1,13 +1,13 @@
-# Welcome to Bangazon
+# Welcome to Server Report
 
-This web application is the source code for the Bangazon e-commerce web site. It is powered by Python and Django.
+This web application is the source code for the Server Report web site. It is powered by Python and Django.
 
 Students, you are inheriting a basic implementation that provides the following features:
 
-1. User registration 
-1. User login 
-1. User logout 
-1. Adding a product 
+1. User registration
+1. User login
+1. User logout
+1. Adding a product
 1. Listing products
 
 Please consult the backlog of issues and work with your product owner to implement the top priority tickets for your sprints.
