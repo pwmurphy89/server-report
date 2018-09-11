@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Server Report</title>
+  </head>
+  <body>
+    <h1>All Tables</h1>
+    <h4>Total Sales: {{ total_sales }}</h4>
+    <h4>Total Shifts: {{ shifts }}</h4>
+    <h4>Total Hours: {{ hours }} </h4>
+    <h4>Total Customers: {{ customers }}</h4>
+    <h4>Average Tip Percentage: {{ average_tip_percentage }}%</h4>
+    <ol>
+    {% for table in tables %}
+        <li>{{ table.food_sales }}</li>
+    {% endfor %}
+    </ol>
+  </body>
+</html>
+<!-- 'tables': tables,'shifts':shifts.count(),
+'total_sales': total_sales,
+'food_sales': food_sales,
+'drink_sales': drink_sales,
+'hours': hours -->

@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django_seed import Seed
 seeder = Seed.seeder()
 import random
+import decimal
 from datetime import datetime
 from django.contrib.auth.models import User
 from website.models import Shift_Model, Table_Model
@@ -20,7 +21,7 @@ def drink():
 def guests():
     return random.randint(1, 10)
 def tip():
-    return random.randint(12, 25)
+    return float(random.randint(12, 25)/100)
 
 class Command(BaseCommand):
     """Allows command line integration for faker_factory.py"""

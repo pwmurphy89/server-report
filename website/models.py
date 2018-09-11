@@ -34,7 +34,7 @@ class Table_Model(models.Model):
     food_sales = models.IntegerField()
     drink_sales = models.IntegerField()
     guests_number = models.IntegerField()
-    tip_percentage = models.IntegerField()
+    tip_percentage = models.FloatField()
     @property
     def total(self):
         return sum(self.food_sales, self.drink_sales)

@@ -3,9 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import RequestContext
-
+from datetime import datetime
 from website.forms import UserForm, ProductForm
-from website.models import Product
+from django.contrib.auth.models import User
+from website.models import Product, Table_Model, Shift_Model
 
 def index(request):
     template_name = 'index.html'
@@ -82,6 +83,47 @@ def login_user(request):
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
+
+def total_sales(request):
+    user = User.objects.get(username=request.user)
+    shifts = Shift_Model.objects.filter(server_id=user.id)
+    tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id)
+    template_name = 'reports/total.html'
+    total_sales = 0
+    food_sales = 0
+    drink_sales = 0
+    hours = 0
+    customers = 0
+    tip_percentage = 0
+    for table in tables:
+        total_sales += table.food_sales + table.drink_sales
+        food_sales += table.food_sales
+        drink_sales += table.drink_sales
+        customers += table.guests_number
+        tip_percentage += table.tip_percentage
+    average_tip_percentage = int((tip_percentage/shifts.count()) * 100)
+
+    for shift in shifts:
+        print(shift.time_in)
+
+    return render(request, template_name, {
+        'tables': tables,'shifts':shifts.count(),
+        'total_sales': total_sales,
+        'food_sales': food_sales,
+        'drink_sales': drink_sales,
+        'hours': shifts.count() * 5,
+        'customers': customers,
+        'average_tip_percentage': average_tip_percentage
+        })
+
+
+
+
+
+
+
+
+
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
     logout(request)

@@ -7,9 +7,10 @@
     <title>Server Report</title>
   </head>
   <body>
-    <h1>Welcome to Server Report!</h1>
+    <h1>Restaurant Server Report</h1>
     {% if user.is_authenticated %}
-    <h1>Server Report says... hello {{ user.username }}!</h1>
+    <h1>Welcome {{ user.username }} to Server Report!</h1>
+    <h3>A breakdown of your sales</h3>
     <a href="{% url 'website:logout' %}">Logout</a>
     {% else %}
     <h1>Server Report says...</h1>
