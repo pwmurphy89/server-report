@@ -11,6 +11,35 @@
     {% if user.is_authenticated %}
     <h1>Welcome {{ user.username }} to Server Report!</h1>
     <h3>A breakdown of your sales</h3>
+    <a href="{% url 'website:total_sales' %}">Total</a>
+    <fieldset>
+      <legend>Course registration</legend>
+      <label for="start">Start month</label>
+      <input type="month" id="start" name="start"
+             min="2018-03" value="2018-05" />
+      <span class="validity"></span>
+  </fieldset>
+
+
+  <form action ="{% url 'website:month' %}" method="post">{% csrf_token %}
+    <select name="month" id="month">
+       <option value=1>January</option>
+       <option value="February">February</option>
+       <option value="March">March</option>
+       <option value="April">April</option>
+       <option value="May">May</option>
+       <option value="June">June</option>
+       <option value="July">July</option>
+       <option value="August">August</option>
+       <option value=9>September</option>
+       <option value="October">October</option>
+       <option value="November">November</option>
+       <option value="December">December</option>
+    </select>
+    <input type="submit" value="submit">
+  </form>
+
+
     <a href="{% url 'website:logout' %}">Logout</a>
     {% else %}
     <h1>Server Report says...</h1>

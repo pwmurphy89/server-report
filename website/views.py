@@ -87,36 +87,97 @@ def login_user(request):
 def total_sales(request):
     user = User.objects.get(username=request.user)
     shifts = Shift_Model.objects.filter(server_id=user.id)
+    hours = shifts.count() * 5
     tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id)
+    tables_per_shift = tables.count()/shifts.count()
     template_name = 'reports/total.html'
     total_sales = 0
     food_sales = 0
     drink_sales = 0
-    hours = 0
     customers = 0
     tip_percentage = 0
+    total_tips = 0
     for table in tables:
-        total_sales += table.food_sales + table.drink_sales
         food_sales += table.food_sales
         drink_sales += table.drink_sales
         customers += table.guests_number
-        tip_percentage += table.tip_percentage
-    average_tip_percentage = int((tip_percentage/shifts.count()) * 100)
-
-    for shift in shifts:
-        print(shift.time_in)
+        total_tips += int((table.food_sales + table.drink_sales) * table.tip_percentage)
+    total_sales = food_sales + drink_sales
+    average_tip_percentage = int((total_tips/total_sales) * 100)
 
     return render(request, template_name, {
-        'tables': tables,'shifts':shifts.count(),
+        'tables': tables.count(),
+        'shifts':shifts.count(),
         'total_sales': total_sales,
         'food_sales': food_sales,
         'drink_sales': drink_sales,
-        'hours': shifts.count() * 5,
+        'hours': hours,
         'customers': customers,
-        'average_tip_percentage': average_tip_percentage
+        'average_tip_percentage': average_tip_percentage,
+        'total_tips': total_tips,
+        'average_tips_hourly': total_tips/ hours,
+        'average_tips_shift': total_tips/ shifts.count(),
+        'average_tips_table': total_tips/ tables.count(),
+        'average_tips_customer': int(total_tips / customers),
+
+        'average_sales_hourly': total_sales/ hours,
+        'average_sales_shift': total_sales/ shifts.count(),
+        'average_sales_table': total_sales/ tables.count(),
+        'average_sales_customer': int(total_sales / customers),
+        'tables_per_shift': int(tables_per_shift)
         })
 
+def month(request):
+    month = request.POST.get("month")
+    user = User.objects.get(username=request.user)
+        # tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id)
 
+    month_tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id,shift_id__date__month=month)
+    month_shifts = Shift_Model.objects.filter(server_id=user.id, date__month=month)
+    for shift in month_shifts:
+        print("hello",shift.date)
+    for table in month_tables:
+        print("months", table.food_sales)
+#     shifts = Shift_Model.objects.filter(server_id=user.id)
+#     hours = shifts.count() * 5
+#     tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id, date__month = "09")
+#     tables_per_shift = tables.count()/shifts.count()
+    template_name = 'reports/month.html'
+#     total_sales = 0
+#     food_sales = 0
+#     drink_sales = 0
+#     customers = 0
+#     tip_percentage = 0
+#     total_tips = 0
+#     for table in tables:
+#         food_sales += table.food_sales
+#         drink_sales += table.drink_sales
+#         customers += table.guests_number
+#         total_tips += int((table.food_sales + table.drink_sales) * table.tip_percentage)
+#     total_sales = food_sales + drink_sales
+#     average_tip_percentage = int((total_tips/total_sales) * 100)
+
+    return render(request, template_name, {})
+#         'tables': tables.count(),
+#         'shifts':shifts.count(),
+#         'total_sales': total_sales,
+#         'food_sales': food_sales,
+#         'drink_sales': drink_sales,
+#         'hours': hours,
+#         'customers': customers,
+#         'average_tip_percentage': average_tip_percentage,
+#         'total_tips': total_tips,
+#         'average_tips_hourly': total_tips/ hours,
+#         'average_tips_shift': total_tips/ shifts.count(),
+#         'average_tips_table': total_tips/ tables.count(),
+#         'average_tips_customer': int(total_tips / customers),
+
+#         'average_sales_hourly': total_sales/ hours,
+#         'average_sales_shift': total_sales/ shifts.count(),
+#         'average_sales_table': total_sales/ tables.count(),
+#         'average_sales_customer': int(total_sales / customers),
+#         'tables_per_shift': int(tables_per_shift)
+#         })
 
 
 
