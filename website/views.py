@@ -128,56 +128,50 @@ def total_sales(request):
         })
 
 def month(request):
+    template_name = 'reports/month.html'
     month = request.POST.get("month")
     user = User.objects.get(username=request.user)
         # tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id)
 
     month_tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id,shift_id__date__month=month)
     month_shifts = Shift_Model.objects.filter(server_id=user.id, date__month=month)
-    for shift in month_shifts:
-        print("hello",shift.date)
+    hours = int(month_shifts.count() * 5)
+    tables_per_shift = int(month_tables.count()/month_shifts.count())
+    month_sales = 0
+    food_sales = 0
+    drink_sales = 0
+    customers = 0
+    tip_percentage = 0
+    total_tips = 0
     for table in month_tables:
-        print("months", table.food_sales)
-#     shifts = Shift_Model.objects.filter(server_id=user.id)
-#     hours = shifts.count() * 5
-#     tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id, date__month = "09")
-#     tables_per_shift = tables.count()/shifts.count()
-    template_name = 'reports/month.html'
-#     total_sales = 0
-#     food_sales = 0
-#     drink_sales = 0
-#     customers = 0
-#     tip_percentage = 0
-#     total_tips = 0
-#     for table in tables:
-#         food_sales += table.food_sales
-#         drink_sales += table.drink_sales
-#         customers += table.guests_number
-#         total_tips += int((table.food_sales + table.drink_sales) * table.tip_percentage)
-#     total_sales = food_sales + drink_sales
-#     average_tip_percentage = int((total_tips/total_sales) * 100)
+        food_sales += table.food_sales
+        drink_sales += table.drink_sales
+        customers += table.guests_number
+        total_tips += int((table.food_sales + table.drink_sales) * table.tip_percentage)
+    month_sales = food_sales + drink_sales
+    average_tip_percentage = int((total_tips/month_sales) * 100)
 
-    return render(request, template_name, {})
-#         'tables': tables.count(),
-#         'shifts':shifts.count(),
-#         'total_sales': total_sales,
-#         'food_sales': food_sales,
-#         'drink_sales': drink_sales,
-#         'hours': hours,
-#         'customers': customers,
-#         'average_tip_percentage': average_tip_percentage,
-#         'total_tips': total_tips,
-#         'average_tips_hourly': total_tips/ hours,
-#         'average_tips_shift': total_tips/ shifts.count(),
-#         'average_tips_table': total_tips/ tables.count(),
-#         'average_tips_customer': int(total_tips / customers),
+    return render(request, template_name, {
+        'tables': month_tables.count(),
+        'shifts':month_shifts.count(),
+        'month_sales': month_sales,
+        'food_sales': food_sales,
+        'drink_sales': drink_sales,
+        'hours': hours,
+        'customers': customers,
+        'average_tip_percentage': average_tip_percentage,
+        'total_tips': total_tips,
+        'average_tips_hourly': int(total_tips/ hours),
+        'average_tips_shift': int(total_tips/ month_shifts.count()),
+        'average_tips_table': int(total_tips/ month_tables.count()),
+        'average_tips_customer': int(total_tips / customers),
 
-#         'average_sales_hourly': total_sales/ hours,
-#         'average_sales_shift': total_sales/ shifts.count(),
-#         'average_sales_table': total_sales/ tables.count(),
-#         'average_sales_customer': int(total_sales / customers),
-#         'tables_per_shift': int(tables_per_shift)
-#         })
+        'average_sales_hourly': int(month_sales/ hours),
+        'average_sales_shift': int(month_sales/ month_shifts.count()),
+        'average_sales_table': int(month_sales/ month_tables.count()),
+        'average_sales_customer': int(month_sales / customers),
+        'tables_per_shift': tables_per_shift
+    })
 
 
 
