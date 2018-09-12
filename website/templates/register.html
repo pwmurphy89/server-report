@@ -3,15 +3,18 @@
     <head>
         <title>Server Report</title>
     </head>
-
+    <style>
+    body {
+        background-color: bisque;
+        text-align: center;
+    }
+    </style>
     <body>
-        <h1>Register with Server Report</h1>
-
         {% if registered %}
         <strong>Thank you for registering!</strong>
         <a href="{% url 'website:index' %}">Return to the homepage.</a><br />
         {% else %}
-        <strong>Register here!</strong><br />
+        <strong class="register-here">Register here!</strong><br />
 
         <form id="user_form" method="post" action="{% url 'website:register' %}"
                 enctype="multipart/form-data">

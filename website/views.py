@@ -9,8 +9,9 @@ from django.contrib.auth.models import User
 from website.models import Product, Table_Model, Shift_Model
 
 def index(request):
+    date = datetime.now().strftime('%Y-%m-%d')
     template_name = 'index.html'
-    return render(request, template_name, {})
+    return render(request, template_name, {'date':date})
 
 
 # Create your views here.
@@ -106,6 +107,7 @@ def total_sales(request):
     average_tip_percentage = int((total_tips/total_sales) * 100)
 
     return render(request, template_name, {
+        'user': user,
         'tables': tables.count(),
         'shifts':shifts.count(),
         'total_sales': total_sales,
@@ -115,14 +117,14 @@ def total_sales(request):
         'customers': customers,
         'average_tip_percentage': average_tip_percentage,
         'total_tips': total_tips,
-        'average_tips_hourly': total_tips/ hours,
-        'average_tips_shift': total_tips/ shifts.count(),
-        'average_tips_table': total_tips/ tables.count(),
+        'average_tips_hourly': int(total_tips/ hours),
+        'average_tips_shift': int(total_tips/ shifts.count()),
+        'average_tips_table': int(total_tips/ tables.count()),
         'average_tips_customer': int(total_tips / customers),
 
-        'average_sales_hourly': total_sales/ hours,
-        'average_sales_shift': total_sales/ shifts.count(),
-        'average_sales_table': total_sales/ tables.count(),
+        'average_sales_hourly': int(total_sales/ hours),
+        'average_sales_shift': int(total_sales/ shifts.count()),
+        'average_sales_table': int(total_sales/ tables.count()),
         'average_sales_customer': int(total_sales / customers),
         'tables_per_shift': int(tables_per_shift)
         })

@@ -5,25 +5,62 @@
     <meta charset="utf-8">
     <title>Server Report</title>
   </head>
+  <style>
+        body{
+            background-color: bisque;
+        }
+      .header {
+          text-align: center;
+      }
+      .header span{
+          color:blue;
+      }
+      #main{
+          display: flex;
+      }
+      .totals{
+          width: 100%;
+          margin-left: 20px;
+      }
+      .average-tips{
+          width: 100%;
+      }
+      .average-sales{
+          width: 100%;
+      }
+  </style>
   <body>
-    <h1>All Tables</h1>
-    <h4>Total Sales: ${{ total_sales }}</h4>
-    <h4>Total Tables: {{ tables }} </h4>
-    <h4>Total Shifts: {{ shifts }}</h4>
-    <h4>Average Tables per Shift: {{ tables_per_shift }} </h4>
-    <h4>Total Hours: {{ hours }} </h4>
-    <h4>Total Customers: {{ customers }}</h4>
-    <h4>Average Tip Percentage: {{ average_tip_percentage }}%</h4>
-    <h4>Total Tips: ${{ total_tips }} </h4>
+      <div class="header">
+            <h1>Total to Date for <span>{{ user }}</span></h1>
+            <a href="{% url 'website:index' %}">Return to the homepage.</a><br />
+      </div>
+       <div id="main">
+            <div class="totals">
+                    <h1>Totals</h1>
+                    <h4>Total Sales: ${{ total_sales }}</h4>
+                    <h4>Total Tips: ${{ total_tips }} </h4>
+                    <h4>Total Shifts: {{ shifts }}</h4>
+                    <h4>Total Tables: {{ tables }} </h4>
+                    <h4>Total Customers: {{ customers }}</h4>
+                    <h4>Total Hours: {{ hours }} </h4>
+            </div>
 
-    <h4>Average Tips per Hour: ${{ average_tips_hourly }}</h4>
-    <h4>Average Tips per Shift: $ {{ average_tips_shift }}</h4>
-    <h4>Average Tips per Table: $ {{ average_tips_table }} </h4>
-    <h4>Average Tips per Customer: $ {{ average_tips_customer }} </h4>
+            <div class="average-tips">
+                    <h1>Average Tips</h1>
+                    <h4>Average Tip Percentage: {{ average_tip_percentage }}%</h4>
+                    <h4>Average Tips per Hour: ${{ average_tips_hourly }}</h4>
+                    <h4>Average Tips per Shift: $ {{ average_tips_shift }}</h4>
+                    <h4>Average Tips per Table: $ {{ average_tips_table }} </h4>
+                    <h4>Average Tips per Customer: $ {{ average_tips_customer }} </h4>
+            </div>
 
-    <h4>Average Sales per Hour: ${{ average_sales_hourly }}</h4>
-    <h4>Average Sales per Shift: $ {{ average_sales_shift }}</h4>
-    <h4>Average Sales per Table: $ {{ average_sales_table }} </h4>
-    <h4>Average Sales per Customer: $ {{ average_sales_customer }} </h4>
+            <div class="average-sales">
+                    <h1>Average Sales</h1>
+                    <h4>Average Sales per Hour: ${{ average_sales_hourly }}</h4>
+                    <h4>Average Sales per Shift: $ {{ average_sales_shift }}</h4>
+                    <h4>Average Sales per Table: $ {{ average_sales_table }} </h4>
+                    <h4>Average Sales per Customer: $ {{ average_sales_customer }} </h4>
+            </div>
+        </div>
   </body>
 </html>

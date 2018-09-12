@@ -1,52 +1,156 @@
 {% load staticfiles %}
+<!doctype html>
+<title>Server Report</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+    margin: 0;
+  }
+  .col-1 {
+    background-color:antiquewhite;
+    flex: 1;
+  }
+  .col-2 {
+    display: flex;
+    flex-direction: column;
+    flex: 5;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4GariDiJJhLrLusiMxm1xH25hcrDXcaCEZumCU0k02PNoViiHqg");
+    /* background-image: url( "{% static 'images/background1.jpg' %}"); */
+    /* background-image: url( "website/static/images/background1.jpg"); */
+    /* background-image: url('{{ STATIC_URL }}/images/background1.jpg'); */
+  }
+  .content > article {
+    flex: 4;
+    min-height: 60vh;
+    display: inline-flex;
+  }
+  header, footer {
+    background:burlywood;
+    height: 20vh;
+    font-size: 40px;
+    text-align: center;
+  }
+  header, footer, article, nav {
+    padding: 1em;
+  }
+  .article-h1 {
+      text-align: center;
+      background-color: burlywood;
+      margin: 0px;
+  }
+  #total-sales {
+    color: white;
+    font-size: 30px;
+      width: 33%;
+      text-align: center;
+  }
+  #total-sales a {
+    font-size: 20px;
+  }
+  #month-sales {
+    color: white;
+    font-size: 30px;
+      width: 33%;
+      text-align: center;
+  }
+  #month-sales select {
+    font-size: 20px;
+  }
+  .month-submit {
+    font-size: 20px;
+  }
+  #week-sales {
+    color: white;
+    font-size: 30px;
+    width: 33%;
+    text-align: center;
+  }
+  #week-sales h3{
+    margin-bottom: 23px;
+  }
+.week-input{
+  font-size: 17px;
+}
+.week-submit {
+  font-size: 20px;
+}
+.logout{
+  font-size: 30px;
+}
+.register{
+  font-size: 30px;
+}
+.login{
+  font-size: 30px;
+}
+</style>
+<body>
+  <nav class="col-1">
+      {% if user.is_authenticated %}
+      <h1>Welcome {{ user.username }}</h1>
+      <h3>Today's Date: {{ date }}</h3>
+      <a class="logout" href="{% url 'website:logout' %}">Logout</a>
+      {% else %}
+      <div><a class = "register"href="{% url 'website:register' %}">Register</a></div>
+      <div><a class = "login" href="{% url 'website:login' %}">Login</a></div>
+      {% endif %}
+</nav>
+  <div class="col-2">
+      <header>Restaurant Server Report
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Server Report</title>
-  </head>
-  <body>
-    <h1>Restaurant Server Report</h1>
-    {% if user.is_authenticated %}
-    <h1>Welcome {{ user.username }} to Server Report!</h1>
-    <h3>A breakdown of your sales</h3>
-    <a href="{% url 'website:total_sales' %}">Total Report</a>
-  <h3>Monthly Report</h3>
-  <form action ="{% url 'website:month' %}" method="post">{% csrf_token %}
-    <select name="month" id="month">
-       <option value=1>January</option>
-       <option value=2>February</option>
-       <option value=3>March</option>
-       <option value=4>April</option>
-       <option value=5>May</option>
-       <option value=6>June</option>
-       <option value=7>July</option>
-       <option value=8>August</option>
-       <option value=9>September</option>
-       <option value=10>October</option>
-       <option value=11>November</option>
-       <option value=12>December</option>
-    </select>
-    <input type="submit" value="submit">
-  </form>
-  <h3>Weekly Report</h3>
-  <form action ="{% url 'website:week' %}" method="post">{% csrf_token %}
-  <fieldset>
-      <legend>2018 Weeks</legend>
-      <div class="control">
-          <label for="week">Choose a week:</label>
-          <input type="week" name="week" id="week"
-                 min="2018-W0" max="2018-W52" required />
-     </div>
-     <div><input type="submit" value="week"></div>
-  </fieldset>
-
-    <a href="{% url 'website:logout' %}">Logout</a>
-    {% else %}
-    <h1>Server Report says...</h1>
-    <div><a href="{% url 'website:register' %}">Register</a></div>
-    <div><a href="{% url 'website:login' %}">Login</a></div>
-    {% endif %}
-  </body>
-</html>
+      </header>
+      <h1 class= "article-h1">A Breakdown of your sales, tips and hours</h1>
+    <main class="content">
+    <article>
+        {% if user.is_authenticated %}
+        <div id="total-sales">
+            <h3>Total Report</h3>
+            <button><a href="{% url 'website:total_sales' %}">View Total</a></button>
+        </div>
+        <div id="month-sales">
+            <h3>Monthly Report</h3>
+            <form action ="{% url 'website:month' %}" method="post">{% csrf_token %}
+            <select name="month" id="month">
+                <option value=1>January</option>
+                <option value=2>February</option>
+                <option value=3>March</option>
+                <option value=4>April</option>
+                <option value=5>May</option>
+                <option value=6>June</option>
+                <option value=7>July</option>
+                <option value=8>August</option>
+                <option value=9>September</option>
+                <option value=10>October</option>
+                <option value=11>November</option>
+                <option value=12>December</option>
+            </select>
+            <input class="month-submit" type="submit" value="View Month">
+            </form>
+        </div>
+        <div id="week-sales">
+            <h3>Weekly Report</h3>
+            <form action ="{% url 'website:week' %}" method="post">{% csrf_token %}
+                <fieldset>
+                    <div class="control">
+                        <input class="week-input" type="week" name="week" id="week"
+                            min="2018-W0" max="2018-W52" required />
+                        <input class="week-submit" type="submit" value="View Week">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        {% endif %}
+    </article>
+    </main>
+  	<footer></footer>
+  </div>
+</body>

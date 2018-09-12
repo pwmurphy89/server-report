@@ -5,25 +5,180 @@
     <meta charset="utf-8">
     <title>Server Report</title>
   </head>
+  <style>
+        body{
+            background-color: bisque;
+        }
+        .header {
+            text-align: center;
+        }
+        .header span{
+            color:blue;
+        }
+        #main{
+            display: flex;
+        }
+        .totals{
+            width: 100%;
+            margin-left: 20px;
+        }
+        .average-tips{
+            width: 100%;
+        }
+        .average-sales{
+            width: 100%;
+        }
+    </style>
   <body>
-    <h1>MONTH {{month}}, 2018</h1>
-    <h4>Monthly Total Sales: ${{ month_sales }}</h4>
-    <h4>Monthly Total Tables: {{ tables }} </h4>
-    <h4>Monthly Total Shifts: {{ shifts }}</h4>
-    <h4>Average Tables per Shift: {{ tables_per_shift }} </h4>
-    <h4>Monthly Total Hours: {{ hours }} </h4>
-    <h4>Monthly Total Customers: {{ customers }}</h4>
-    <h4>Average Tip Percentage: {{ average_tip_percentage }}%</h4>
-    <h4>Monthly Total Tips: ${{ total_tips }} </h4>
+        <div class="header">
+                <h1>Monthly Report for <span>{{ user }}</span></h1>
+                <h1>MONTH {{month}}, 2018</h1>
+                <a href="{% url 'website:index' %}">Return to the homepage.</a><br />
+        </div>
+        <div id="main">
+            <div class="totals">
+                <h1>Totals</h1>
+                <h4>Monthly Total Sales: ${{ month_sales }}</h4>
+                <h4>Monthly Total Tips: ${{ total_tips }} </h4>
+                <h4>Monthly Total Shifts: {{ shifts }}</h4>
+                <h4>Monthly Total Tables: {{ tables }} </h4>
+                <h4>Monthly Total Customers: {{ customers }}</h4>
+                <h4>Monthly Total Hours: {{ hours }} </h4>
+            </div>
 
-    <h4>Average Tips per Hour: ${{ average_tips_hourly }}</h4>
-    <h4>Average Tips per Shift: $ {{ average_tips_shift }}</h4>
-    <h4>Average Tips per Table: $ {{ average_tips_table }} </h4>
-    <h4>Average Tips per Customer: $ {{ average_tips_customer }} </h4>
+            <div class="average-tips">
+                <h1>Average Tips</h1>
+                <h4>Average Tips per Hour: ${{ average_tips_hourly }}</h4>
+                <h4>Average Tips per Shift: $ {{ average_tips_shift }}</h4>
+                <h4>Average Tips per Table: $ {{ average_tips_table }} </h4>
+                <h4>Average Tips per Customer: $ {{ average_tips_customer }} </h4>
+                <h4>Average Tip Percentage: {{ average_tip_percentage }}%</h4>
+            </div>
 
-    <h4>Average Sales per Hour: ${{ average_sales_hourly }}</h4>
-    <h4>Average Sales per Shift: $ {{ average_sales_shift }}</h4>
-    <h4>Average Sales per Table: $ {{ average_sales_table }} </h4>
-    <h4>Average Sales per Customer: $ {{ average_sales_customer }} </h4>
+            <div class="average-sales">
+                <h1>Average Sales</h1>
+                <h4>Average Sales per Hour: ${{ average_sales_hourly }}</h4>
+                <h4>Average Sales per Shift: $ {{ average_sales_shift }}</h4>
+                <h4>Average Sales per Table: $ {{ average_sales_table }} </h4>
+                <h4>Average Sales per Customer: $ {{ average_sales_customer }} </h4>
+            </div>
+        </div>
   </body>
 </html>
+
+<!-- <!doctype html>
+<title>Example</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+    margin: 0;
+  }
+  .col-1 {
+    background: #D7E8D4;
+    flex: 1;
+  }
+  .col-2 {
+    display: flex;
+    flex-direction: column;
+    flex: 5;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    background-image: url( "{% static 'images/background1.jpg' %}");
+  }
+  .content > article {
+    flex: 4;
+    min-height: 60vh;
+    display: inline-flex;
+  }
+  header, footer {
+    background:burlywood;
+    height: 20vh;
+    font-size: 40px;
+    text-align: center;
+  }
+  header, footer, article, nav {
+    padding: 1em;
+  }
+  .article-h1 {
+      text-align: center;
+  }
+  #total-sales {
+      width: 33%;
+      text-align: center;
+  }
+  #month-sales {
+      width: 33%;
+      text-align: center;
+  }
+  #week-sales {
+      width: 33%;
+      text-align: center;
+  }
+</style>
+<body>
+  <nav class="col-1">
+      {% if user.is_authenticated %}
+      <h1>Welcome {{ user.username }}</h1>
+      <a href="{% url 'website:logout' %}">Logout</a>
+      {% else %}
+      <div><a href="{% url 'website:register' %}">Register</a></div>
+      <div><a href="{% url 'website:login' %}">Login</a></div>
+      {% endif %}
+</nav>
+  <div class="col-2">
+      <header>Restaurant Server Report</header>
+      <h1 class= "article-h1">A Breakdown of your sales, tips and hours</h1>
+    <main class="content">
+    <article>
+        {% if user.is_authenticated %}
+        <div id="total-sales">
+            <h3>Total Report</h3>
+            <a href="{% url 'website:total_sales' %}">View report to date</a>
+        </div>
+        <div id="month-sales">
+            <h3>Monthly Report</h3>
+            <form action ="{% url 'website:month' %}" method="post">{% csrf_token %}
+            <select name="month" id="month">
+                <option value=1>January</option>
+                <option value=2>February</option>
+                <option value=3>March</option>
+                <option value=4>April</option>
+                <option value=5>May</option>
+                <option value=6>June</option>
+                <option value=7>July</option>
+                <option value=8>August</option>
+                <option value=9>September</option>
+                <option value=10>October</option>
+                <option value=11>November</option>
+                <option value=12>December</option>
+            </select>
+            <input type="submit" value="submit">
+            </form>
+        </div>
+        <div id="week-sales">
+            <h3>Weekly Report</h3>
+            <form action ="{% url 'website:week' %}" method="post">{% csrf_token %}
+                <fieldset>
+                    <legend>2018 Weeks</legend>
+                    <div class="control">
+                        <label for="week-report">Choose a week:</label>
+                        <input type="week" name="week" id="week"
+                            min="2018-W0" max="2018-W52" required />
+                    </div>
+                    <div><input type="submit" value="week"></div>
+                </fieldset>
+            </form>
+        </div>
+        {% endif %}
+    </article>
+    </main>
+  	<footer>Footer</footer>
+  </div>
+</body> -->
