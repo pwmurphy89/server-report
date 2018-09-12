@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^sell$', views.sell_product, name='sell'),
     url(r'^products$', views.list_products, name='list_products'),
     url(r'^total$', views.total_sales, name='total_sales'),
-    url(r'^month$', views.month, name='month'),
-    # url(r'^week$', views.week, name='week'),
+    url(r'^month$', views.month_sales, name='month'),
+    url(r'^week$', views.week_sales, name='week'),
     # url(r'^shift$', views.shift, name='shift'),
 ]
