@@ -2,22 +2,14 @@
 
 This web application is the source code for the Server Report web site. It is powered by Python and Django.
 
-Students, you are inheriting a basic implementation that provides the following features:
 
-1. User registration
-1. User login
-1. User logout
-1. Adding a product
-1. Listing products
+## To run app
+1. Build database by doing following:
+    Run command: django_data.ssh website faker_factory
+3.  View database created in app through DB Browswer to identify usernames generated
+4.  All usernames have a password of 'password'
+5.  Login to view reports generated for All to Date, Months, and Weeks.
 
-Please consult the backlog of issues and work with your product owner to implement the top priority tickets for your sprints.
-
-## To begin work
-
-1. The team lead should clone this repository, then push it to your team's Github repo.
-1. Alert your manager when this is complete and all backlog issues will be imported into your project.
-1. Each teammate should clone the repository.
-1. In the `djangazon` directory that gets created, run the migrations with `python manage.py migrate`
 
 ## Helpful Resources
 
