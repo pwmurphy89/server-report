@@ -8,6 +8,7 @@ from website.forms import UserForm, ProductForm
 from django.contrib.auth.models import User
 from website.models import Product, Table_Model, Shift_Model
 from chartit import DataPool, Chart
+import json
 
 def index(request):
     date = datetime.now().strftime('%Y-%m-%d')
@@ -202,35 +203,36 @@ def all_months(request):
             total_tips += int((table.food_sales + table.drink_sales) * table.tip_percentage)
         total_sales = food_sales + drink_sales
         all_months[month] = {"month": month, "total_sales": total_sales, "total_tips": total_tips}
-    return render(request, template_name, { "all_months": all_months})
+    all_months_json = json.dumps(all_months)
+    return render(request, template_name, { "all_months": all_months_json})
 
 
 from chartit import DataPool, Chart
 
-def weather_chart_view(request, all_months):
+def month_chart_view(request, all_months):
     #Step 1: Create a DataPool with the data we want to retrieve.
-    weatherdata = \
+    monthdata = \
         DataPool(
            series=
             [{'options': {
                'source': all_months},
               'terms': [
                 'month',
-                'houston_temp',
-                'boston_temp']}
+                'total_sales',
+                'total_tips']}
              ])
 
     #Step 2: Create the Chart object
     cht = Chart(
-            datasource = weatherdata,
+            datasource = monthdata,
             series_options =
               [{'options':{
                   'type': 'line',
                   'stacking': False},
                 'terms':{
                   'month': [
-                    'boston_temp',
-                    'houston_temp']
+                    'total_sales',
+                    'total_tips']
                   }}],
             chart_options =
               {'title': {
@@ -240,7 +242,7 @@ def weather_chart_view(request, all_months):
                        'text': 'Month number'}}})
 
     #Step 3: Send the chart object to the template.
-    return render_to_response({'weatherchart': cht})
+    return render_to_response({'monthchart': cht})
 
 
 

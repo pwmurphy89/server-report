@@ -1,10 +1,86 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>Server Report</title>
-  </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <canvas id="myChart"></canvas>
+    </head>
+<script>
+var months = JSON.parse('{{ all_months | escapejs }}');
+console.log(months[1])
+
+
+var ctx = document.getElementById("myChart");
+
+    var myChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+        datasets: [
+            {
+            label: 'Chart 1',
+            data: [
+                {x: months[1].month, y: months[1].total_sales},
+                {x: months[2].month, y: months[2].total_sales},
+                {x: months[3].month, y: months[3].total_sales},
+                {x: months[4].month, y: months[4].total_sales},
+                {x: months[5].month, y: months[5].total_sales},
+                {x: months[6].month, y: months[6].total_sales},
+                {x: months[7].month, y: months[7].total_sales},
+                {x: months[8].month, y: months[8].total_sales},
+                {x: months[9].month, y: months[9].total_sales},
+                {x: months[10].month, y: months[10].total_sales},
+                {x: months[11].month, y: months[11].total_sales},
+                {x: months[12].month, y: months[12].total_sales},
+            ],
+            showLine: true,
+            fill: false,
+            borderColor: 'rgba(0, 200, 0, 1)'
+            },
+        {
+            label: 'Chart 2',
+            data: [
+                {x: months[1].month, y: months[1].total_tips},
+                {x: months[2].month, y: months[2].total_tips},
+                {x: months[3].month, y: months[3].total_tips},
+                {x: months[4].month, y: months[4].total_tips},
+                {x: months[5].month, y: months[5].total_tips},
+                {x: months[6].month, y: months[6].total_tips},
+                {x: months[7].month, y: months[7].total_tips},
+                {x: months[8].month, y: months[8].total_tips},
+                {x: months[9].month, y: months[9].total_tips},
+                {x: months[10].month, y: months[10].total_tips},
+                {x: months[11].month, y: months[11].total_tips},
+                {x: months[12].month, y: months[12].total_tips}
+
+            ],
+            showLine: true,
+            fill: false,
+            borderColor: 'rgba(200, 0, 0, 1)'
+            }
+        ]
+    },
+    options: {
+        tooltips: {
+        mode: 'index',
+        intersect: false,
+        },
+        hover: {
+        mode: 'nearest',
+        intersect: true
+        },
+        scales: {
+        yAxes: [{
+            ticks: {
+            beginAtZero:true
+            }
+        }]
+        },
+    }
+    });
+</script>
   <style>
         body{
             background-color: bisque;
@@ -30,7 +106,7 @@
         }
     </style>
   <body>
-      {{all_months}}
+      <!-- {{all_months}} -->
         <!-- <div class="header">
                 <h1>Monthly Report for <span>{{ user }}</span></h1>
                 <h1>MONTH {{month}}, 2018</h1>
