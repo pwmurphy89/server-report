@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from website.forms import UserForm, ProductForm
 from django.contrib.auth.models import User
 from website.models import Product, Table_Model, Shift_Model
+from chartit import DataPool, Chart
 
 def index(request):
     date = datetime.now().strftime('%Y-%m-%d')
@@ -180,10 +181,72 @@ def month_sales(request):
             'tables_per_shift': tables_per_shift
         })
 
-def week_sales(request):
-    # month_tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id,shift_id__date__month=month)
-    # month_shifts = Shift_Model.objects.filter(server_id=user.id, date__month=month)
+def all_months(request):
+    template_name = "reports/month_graph.html"
+    all_months = {}
+    months = [1,2,3,4,5,6,7,8,9,10,11,12]
+    user = User.objects.get(username=request.user)
+    for month in months:
+        month_tables = Table_Model.objects.select_related('shift').filter(shift_id__server_id=user.id,shift_id__date__month=month)
+        month_shifts = Shift_Model.objects.filter(server_id=user.id, date__month=month)
+        total_sales = 0
+        food_sales = 0
+        drink_sales = 0
+        total_tips = 0
+        if month_shifts.count() == 0:
+            all_months[month] = {"month": month, "total_sales": 0, "total_tips": 0}
+            continue
+        for table in month_tables:
+            food_sales += table.food_sales
+            drink_sales += table.drink_sales
+            total_tips += int((table.food_sales + table.drink_sales) * table.tip_percentage)
+        total_sales = food_sales + drink_sales
+        all_months[month] = {"month": month, "total_sales": total_sales, "total_tips": total_tips}
+    return render(request, template_name, { "all_months": all_months})
 
+
+from chartit import DataPool, Chart
+
+def weather_chart_view(request, all_months):
+    #Step 1: Create a DataPool with the data we want to retrieve.
+    weatherdata = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': all_months},
+              'terms': [
+                'month',
+                'houston_temp',
+                'boston_temp']}
+             ])
+
+    #Step 2: Create the Chart object
+    cht = Chart(
+            datasource = weatherdata,
+            series_options =
+              [{'options':{
+                  'type': 'line',
+                  'stacking': False},
+                'terms':{
+                  'month': [
+                    'boston_temp',
+                    'houston_temp']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Weather Data of Boston and Houston'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Month number'}}})
+
+    #Step 3: Send the chart object to the template.
+    return render_to_response({'weatherchart': cht})
+
+
+
+
+
+def week_sales(request):
     user = User.objects.get(username=request.user)
     all_shifts = Shift_Model.objects.filter(server_id=user.id)
     template_name = 'reports/week.html'
