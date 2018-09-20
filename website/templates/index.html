@@ -26,9 +26,6 @@
     background-image: url("http://eccorestaurantny.com/wp-content/uploads/2013/08/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    /* background-image: url( "{% static 'images/background1.jpg' %}"); */
-    /* background-image: url( "website/static/images/background1.jpg"); */
-    /* background-image: url('{{ STATIC_URL }}/images/background1.jpg'); */
   }
   .content > article {
     flex: 4;
@@ -94,6 +91,15 @@
 .login{
   font-size: 30px;
 }
+#month-graph{
+  color: white;
+  width:25%;
+  text-align: center;
+  font-size: 30px;
+}
+#month-graph button{
+  font-size: 20px;
+}
 </style>
 <body>
   <nav class="col-1">
@@ -138,6 +144,10 @@
             <input class="month-submit" type="submit" value="View Month">
             </form>
         </div>
+        <div id="month-graph">
+            <h3>Monthly Graph</h3>
+            <button><a href="{% url 'website:month_graph' %}">View Monthly Graph</a></button>
+        </div>
         <div id="week-sales">
             <h3>Weekly Report</h3>
             <form action ="{% url 'website:week' %}" method="post">{% csrf_token %}
@@ -150,13 +160,10 @@
                 </fieldset>
             </form>
         </div>
-        <div id="month-graph">
-          <h3>Monthly Graph</h3>
-          <button><a href="{% url 'website:month_graph' %}">View Monthly Graph</a></button>
-      </div>
-        {% endif %}
+
     </article>
     </main>
+    {% endif %}
   	<footer></footer>
   </div>
 </body>

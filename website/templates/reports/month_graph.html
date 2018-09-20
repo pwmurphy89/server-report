@@ -8,11 +8,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <canvas id="myChart"></canvas>
     </head>
+    <style>
+            body{
+                background-color: bisque;
+                width: 50%;
+            }
+            .header {
+                text-align: center;
+            }
+            .header span{
+                color:blue;
+            }
+            #main{
+                display: flex;
+                text-align: center;
+            }
+            .totals{
+                width: 100%;
+            }
+            .average-tips{
+                width: 100%;
+            }
+            .average-sales{
+                width: 100%;
+            }
+        </style>
 <script>
 var months = JSON.parse('{{ all_months | escapejs }}');
-console.log(months[1])
-
-
 var ctx = document.getElementById("myChart");
 
     var myChart = new Chart(ctx, {
@@ -20,7 +42,7 @@ var ctx = document.getElementById("myChart");
     data: {
         datasets: [
             {
-            label: 'Chart 1',
+            label: 'Total Sales by Month',
             data: [
                 {x: months[1].month, y: months[1].total_sales},
                 {x: months[2].month, y: months[2].total_sales},
@@ -36,11 +58,11 @@ var ctx = document.getElementById("myChart");
                 {x: months[12].month, y: months[12].total_sales},
             ],
             showLine: true,
-            fill: false,
+            fill: true,
             borderColor: 'rgba(0, 200, 0, 1)'
             },
         {
-            label: 'Chart 2',
+            label: 'Total Tips by Month',
             data: [
                 {x: months[1].month, y: months[1].total_tips},
                 {x: months[2].month, y: months[2].total_tips},
@@ -81,64 +103,7 @@ var ctx = document.getElementById("myChart");
     }
     });
 </script>
-  <style>
-        body{
-            background-color: bisque;
-        }
-        .header {
-            text-align: center;
-        }
-        .header span{
-            color:blue;
-        }
-        #main{
-            display: flex;
-            text-align: center;
-        }
-        .totals{
-            width: 100%;
-        }
-        .average-tips{
-            width: 100%;
-        }
-        .average-sales{
-            width: 100%;
-        }
-    </style>
+
   <body>
-      <!-- {{all_months}} -->
-        <!-- <div class="header">
-                <h1>Monthly Report for <span>{{ user }}</span></h1>
-                <h1>MONTH {{month}}, 2018</h1>
-                <a href="{% url 'website:index' %}">Return to the homepage.</a><br />
-        </div>
-        <div id="main">
-            <div class="totals">
-                <h1>Totals</h1>
-                <h4>Monthly Total Sales: ${{ month_sales }}</h4>
-                <h4>Monthly Total Tips: ${{ total_tips }} </h4>
-                <h4>Monthly Total Shifts: {{ shifts }}</h4>
-                <h4>Monthly Total Tables: {{ tables }} </h4>
-                <h4>Monthly Total Customers: {{ customers }}</h4>
-                <h4>Monthly Total Hours: {{ hours }} </h4>
-            </div>
-
-            <div class="average-tips">
-                <h1>Average Tips</h1>
-                <h4>Average Tips per Hour: ${{ average_tips_hourly }}</h4>
-                <h4>Average Tips per Shift: $ {{ average_tips_shift }}</h4>
-                <h4>Average Tips per Table: $ {{ average_tips_table }} </h4>
-                <h4>Average Tips per Customer: $ {{ average_tips_customer }} </h4>
-                <h4>Average Tip Percentage: {{ average_tip_percentage }}%</h4>
-            </div>
-
-            <div class="average-sales">
-                <h1>Average Sales</h1>
-                <h4>Average Sales per Hour: ${{ average_sales_hourly }}</h4>
-                <h4>Average Sales per Shift: $ {{ average_sales_shift }}</h4>
-                <h4>Average Sales per Table: $ {{ average_sales_table }} </h4>
-                <h4>Average Sales per Customer: $ {{ average_sales_customer }} </h4>
-            </div>
-        </div> -->
   </body>
 </html>
