@@ -31,13 +31,13 @@ class Command(BaseCommand):
 
         # the number argument is the total num of rows you want created
 
-        seeder.add_entity(User, 10, {
+        seeder.add_entity(User, 5, {
             'password': lambda x: make_password("password")
         })
-        seeder.add_entity(Shift_Model, 12, {
+        seeder.add_entity(Shift_Model, 200, {
             'date': lambda x: random_date()
         })
-        seeder.add_entity(Table_Model, 12, {
+        seeder.add_entity(Table_Model, 500, {
             'food_sales': lambda x: food(),
             'drink_sales': lambda x: drink(),
             'guests_number': lambda x: guests(),
